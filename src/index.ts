@@ -1,7 +1,9 @@
 import "dotenv/config";
 
+import fastifyCors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import fastifyApiReference from "@scalar/fastify-api-reference";
 import Fastify from "fastify";
 import {
   jsonSchemaTransform,
@@ -10,6 +12,8 @@ import {
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import z from "zod";
+
+import { auth } from "./lib/auth.js";
 
 const app = Fastify({
   logger: true,
@@ -35,8 +39,22 @@ await app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
-await app.register(fastifySwaggerUI, {
+await app.register(fastifyApiReference, {
   routePrefix: "/docs",
+  configuration: {
+    sources: [
+      {
+        title: "Bootcamp Treinos API",
+        slug: "bootcamp-treinos-api",
+        url: "/swagger.json",
+      },
+      {
+        title: "Auth API",
+        slug: "auth-api",
+        url: "/api/auth/open-api/generate-schema",
+      },
+    ],
+  },
 });
 
 await app.register(fastifyCors, {
@@ -46,30 +64,17 @@ await app.register(fastifyCors, {
 
 app.withTypeProvider<ZodTypeProvider>().route({
   method: "GET",
-  url: "/",
+  url: "/swagger.json",
   schema: {
-    description: "hello world",
-    tags: ["hello world"],
-    response: {
-      200: z.object({
-        message: z.string(),
-      }),
-    },
+    hide: true,
   },
-  handler: () => {
-    return {
-      message: "hello world",
-    };
+  handler: async () => {
+    return app.swagger();
   },
 });
 
-import fastifyCors from "@fastify/cors";
-
-import { auth } from "./lib/auth.js"; // Your configured Better Auth instance
-
 const fastify = Fastify({ logger: true });
 
-// Register authentication endpoint
 app.route({
   method: ["GET", "POST"],
   url: "/api/auth/*",
