@@ -2,7 +2,7 @@ import { fromNodeHeaders } from "better-auth/node";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 
-import { NotFounderError } from "../errors/index.js";
+import { NotFoundError } from "../errors/index.js";
 import { auth } from "../lib/auth.js";
 import { ErrorSchema, WorkoutPlanSchema } from "../schemas/index.js";
 import { CreateWorkoutPlan } from "../usecases/CreateWorkoutPlan.js";
@@ -41,7 +41,7 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         return reply.status(201).send(result);
       } catch (error) {
         app.log.error(error);
-        if (error instanceof NotFounderError) {
+        if (error instanceof NotFoundError) {
           return reply.status(404).send({
             error: error.message,
             code: "NOT_FOUND_ERROR",
