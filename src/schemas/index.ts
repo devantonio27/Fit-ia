@@ -7,29 +7,6 @@ export const ErrorSchema = z.object({
   code: z.string(),
 });
 
-export const WorkoutPlanSchema = z.object({
-  id: z.uuid(),
-  name: z.string().trim().min(1),
-  workoutDays: z.array(
-    z.object({
-      name: z.string().trim().min(1),
-      isRest: z.boolean().default(false),
-      weekDay: z.enum(WeekDay),
-      coverImageUrl: z.string().optional(),
-      estimatedDurationInSeconds: z.number().min(1),
-      exercises: z.array(
-        z.object({
-          order: z.number().min(0),
-          name: z.string().trim().min(1),
-          sets: z.number().min(1),
-          reps: z.number().min(1),
-          restTimeInSeconds: z.number().min(1),
-        }),
-      ),
-    }),
-  ),
-});
-
 export const StartWorkoutSessionSchema = z.object({
   userWorkoutSessionId: z.uuid(),
 });
@@ -165,3 +142,50 @@ export const ListWorkoutPlansSchema = z.array(
     ),
   }),
 );
+
+export const UpsertUserTrainDataBodySchema = z.object({
+  weightInGrams: z.number().min(0),
+  heightInCentimeters: z.number().min(0),
+  age: z.number().min(0),
+  bodyFatPercentage: z.number().min(0).max(100),
+});
+
+export const UserTrainDataSchema = z.object({
+  userId: z.string(),
+  userName: z.string(),
+  weightInGrams: z.number(),
+  heightInCentimeters: z.number(),
+  age: z.number(),
+  bodyFatPercentage: z.number().min(0).max(100),
+});
+
+export const UpsertUserTrainDataSchema = z.object({
+  userId: z.string(),
+  weightInGrams: z.number(),
+  heightInCentimeters: z.number(),
+  age: z.number(),
+  bodyFatPercentage: z.number(),
+});
+
+export const WorkoutPlanSchema = z.object({
+  id: z.uuid(),
+  name: z.string().trim().min(1),
+  workoutDays: z.array(
+    z.object({
+      name: z.string().trim().min(1),
+      isRest: z.boolean().default(false),
+      weekDay: z.enum(WeekDay),
+      coverImageUrl: z.string().optional(),
+      estimatedDurationInSeconds: z.number().min(1),
+      exercises: z.array(
+        z.object({
+          order: z.number().min(0),
+          name: z.string().trim().min(1),
+          sets: z.number().min(1),
+          reps: z.number().min(1),
+          restTimeInSeconds: z.number().min(1),
+        }),
+      ),
+    }),
+  ),
+});
