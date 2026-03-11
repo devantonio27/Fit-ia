@@ -36,7 +36,7 @@ await app.register(fastifySwagger, {
     servers: [
       {
         description: "Localhost",
-        url: "http://localhost:3000",
+        url: "http://localhost:3001",
       },
     ],
   },
@@ -67,7 +67,7 @@ await app.register(fastifyApiReference, {
 });
 
 //Routes
-await app.register(homeRoutes, { prefix: "/" });
+await app.register(homeRoutes, { prefix: "/home" });
 await app.register(meRoutes, { prefix: "/me" });
 await app.register(statsRoutes, { prefix: "/stats" });
 await app.register(workoutPlanRoutes, { prefix: "/workout-plans" });
@@ -102,8 +102,6 @@ app.withTypeProvider<ZodTypeProvider>().route({
     };
   },
 });
-
-const fastify = Fastify({ logger: true });
 
 app.route({
   method: ["GET", "POST"],
@@ -143,17 +141,8 @@ app.route({
   },
 });
 
-// Initialize server
-app.listen({ port: 4000 }, (err) => {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-  console.log("Server running on port 4000");
-});
-
 try {
-  await app.listen({ port: Number(process.env.PORT) || 3000 });
+  await app.listen({ port: Number(process.env.PORT) || 3001 });
 } catch (err) {
   app.log.error(err);
   process.exit(1);
