@@ -11,7 +11,7 @@ import { GetHomeData } from "../usecases/GetHomeData.js";
 export const homeRoutes = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: "GET",
-    url: "/:date",
+    url: "/home/:date",
     schema: {
       operationId: "getHomeData",
       tags: ["Home"],
