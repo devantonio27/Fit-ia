@@ -3,5 +3,5 @@ node_modules
 /src/generated/prisma
 
 .env
-./dist
+dist/
 .env.example
