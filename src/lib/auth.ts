@@ -8,6 +8,20 @@ import { env } from "./env.js";
 export const auth = betterAuth({
   baseURL: env.API_BASE_URL,
   trustedOrigins: [env.WEB_APP_BASE_URL],
+  advanced: {
+    useSecureCookies: true,
+    crossSubDomainCookies: {
+      enabled: false, // remove isso
+    },
+    cookies: {
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+        },
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
@@ -18,9 +32,10 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
   plugins: [openAPI()],
-  advanced: {
+  /*advanced: {
     crossSubDomainCookies: {
       enabled: true,
     },
   },
+  */
 });
