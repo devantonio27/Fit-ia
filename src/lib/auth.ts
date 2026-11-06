@@ -11,23 +11,24 @@ export const auth = betterAuth({
   advanced: {
     useSecureCookies: true,
     crossSubDomainCookies: {
-      enabled: false, // remove isso
+      enabled: true,
+      domain: "mycoachfit.com.br",
     },
     cookies: {
       state: {
         attributes: {
-          sameSite: "none",
-          secure: true,
-        },
+        sameSite: "none",
+        secure: true,
       },
-      sessionToken: {
-        attributes: {
-          sameSite: "none",
-          secure: true,
-        },
+    },
+    sessionToken: {
+      attributes: {
+        sameSite: "none",
+        secure: true,
       },
     },
   },
+},
   socialProviders: {
     google: {
       clientId: env.GOOGLE_CLIENT_ID,
